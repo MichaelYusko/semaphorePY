@@ -7,7 +7,7 @@ def test_api_version(request_client):
         Args::
             request_client Fixture of Request instance
     """
-    assert request_client.api_version == '/v1'
+    assert request_client.api_version == '/v2'
 
 
 def test_base_url(request_client):
@@ -16,7 +16,7 @@ def test_base_url(request_client):
         Args::
             request_client Fixture of Request instance
     """
-    assert request_client.api_url == 'https://api.semaphoreci.com/v1'
+    assert request_client.api_url == 'https://api.semaphoreci.com/v2'
 
 
 def test_make_url(request_client):
