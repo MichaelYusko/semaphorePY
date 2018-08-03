@@ -141,9 +141,19 @@ class OrganizationResource(SemaphoreBaseResource):
         super().__init__(api_token)
 
     def list(self):
+        """Returns an array with organization objects"""
         return self._get(resource=self._BASE_RESOURCE)
 
     def by_name(self, user_name: str):
+        """Searches a organization by username
+
+            Args::
+                user_name An username of a organization
+
+            Returns::
+                A dictionary object with organization info
+                otherwise error object
+        """
         resource = f'{self._BASE_RESOURCE}/{user_name}'
         return self._get(resource=resource)
 
