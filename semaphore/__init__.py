@@ -163,7 +163,3 @@ class Semaphore(SemaphoreBaseResource):
     def __init__(self, api_token: str):
         super().__init__(api_token)
         self.organization = OrganizationResource(api_token)
-
-
-semaphore = Semaphore('WN_sz9weps1E9H1zmj8y')
-print(semaphore.organization.by_name('mikezztest'))
