@@ -1,6 +1,6 @@
 import pytest
 
-from semaphore import Request
+from semaphore import BaseRequest, Semaphore
 
 
 @pytest.fixture(scope='session')
@@ -10,4 +10,9 @@ def request_client():
         Returns:
             A instance of Request class
     """
-    return Request()
+    return BaseRequest('Api-token')
+
+
+@pytest.fixture(scope='session')
+def semaphore():
+    return Semaphore('Api-Token')
