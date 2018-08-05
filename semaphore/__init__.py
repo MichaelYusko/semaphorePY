@@ -38,6 +38,7 @@ class BaseRequest:
 
     _BASE_URL = 'https://api.semaphoreci.com'
     _API_VERSION = '/v2'
+    _RESOURCE = None
 
     @property
     def api_url(self) -> str:
@@ -135,14 +136,14 @@ class OrganizationResource(SemaphoreBaseResource):
             by_name(str) Return a organization by name
     """
 
-    _BASE_RESOURCE = 'orgs'
+    _RESOURCE = 'orgs'
 
     def __init__(self, api_token: str):
         super().__init__(api_token)
 
     def list(self):
         """Returns an array with organization objects"""
-        return self._get(resource=self._BASE_RESOURCE)
+        return self._get(resource=self._RESOURCE)
 
     def by_name(self, user_name: str):
         """Searches a organization by username
@@ -154,7 +155,34 @@ class OrganizationResource(SemaphoreBaseResource):
                 A dictionary object with organization info
                 otherwise error object
         """
-        resource = f'{self._BASE_RESOURCE}/{user_name}'
+        resource = f'{self._RESOURCE}/{user_name}'
+        return self._get(resource=resource)
+
+
+class TeamResource(SemaphoreBaseResource):
+    """Team resource class
+
+        Args::
+             api_token A authentication token from Semaphore service
+
+        Methods::
+            all(str) Returns all team objects by username
+    """
+    def __init__(self, api_token):
+        super().__init__(api_token)
+
+    _RESOURCE = 'teams'
+
+    def all(self, username):
+        """Returns all teams objects, with related information
+
+            Args::
+                username All related teams to username
+
+            Returns::
+                An array with team objects information
+        """
+        resource = f'orgs/{username}/{self._RESOURCE}'
         return self._get(resource=resource)
 
 
@@ -163,3 +191,4 @@ class Semaphore(SemaphoreBaseResource):
     def __init__(self, api_token: str):
         super().__init__(api_token)
         self.organization = OrganizationResource(api_token)
+        self.teams = TeamResource(api_token)
