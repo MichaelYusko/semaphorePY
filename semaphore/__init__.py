@@ -158,6 +158,30 @@ class OrganizationResource(SemaphoreBaseResource):
         resource = f'{self._RESOURCE}/{user_name}'
         return self._get(resource=resource)
 
+    def urls(self, username):
+        """Returns a organization project urls
+
+            Args::
+                username An username of a organization
+
+            Returns::
+                An array with urls
+        """
+        resource = f'{self._RESOURCE}/{username}/projects'
+        return self._get(resource=resource)
+
+    def secret_urls(self, username):
+        """Returns a organization project secret urls
+
+            Args::
+                username An username of a organization
+
+            Returns::
+                An array with urls
+        """
+        resource = f'{self._RESOURCE}/{username}/secrets'
+        return self._get(resource=resource)
+
 
 class TeamResource(SemaphoreBaseResource):
     """Team resource class
