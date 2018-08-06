@@ -21,7 +21,7 @@ class BaseRequest:
         Constants::
             BASE_URL basic Semaphore API url
             API_VERSION Semaphore's API version
-
+            RESOURCE Name of a particular resource
 
         Properties::
             api_url Makes full url for HTTP calls, based on current API version
@@ -149,7 +149,7 @@ class OrganizationResource(SemaphoreBaseResource):
         """Searches a organization by username
 
             Args::
-                user_name An username of a organization
+                user_name A username of a organization
 
             Returns::
                 A dictionary object with organization info
@@ -162,7 +162,7 @@ class OrganizationResource(SemaphoreBaseResource):
         """Returns a organization project urls
 
             Args::
-                username An username of a organization
+                username A username of a organization
 
             Returns::
                 An array with urls
@@ -174,12 +174,24 @@ class OrganizationResource(SemaphoreBaseResource):
         """Returns a organization project secret urls
 
             Args::
-                username An username of a organization
+                username A username of a organization
 
             Returns::
                 An array with urls
         """
         resource = f'{self._RESOURCE}/{username}/secrets'
+        return self._get(resource=resource)
+
+    def users(self, username: str):
+        """Returns all users of a organization
+
+            Args::
+                username A username of a organization
+
+            Returns::
+                An array with user objects
+        """
+        resource = f'{self._RESOURCE}/{username}/users'
         return self._get(resource=resource)
 
 
