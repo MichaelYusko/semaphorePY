@@ -43,6 +43,13 @@ class TestOrganizationResource(BaseTestCase):
             self.semaphore.organization.urls('mikezz')
         )
 
+    @patch('semaphore.requests.get')
+    def test_organization_users(self, request):
+        self.return_assert(
+            request,
+            self.semaphore.organization.users('mikezz'),
+        )
+
 
 class TestTeamResource(BaseTestCase):
     @patch('semaphore.requests.get')
