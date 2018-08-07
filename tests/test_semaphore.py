@@ -55,3 +55,36 @@ class TestTeamResource(BaseTestCase):
     @patch('semaphore.requests.get')
     def test_team_list(self, request):
         self.return_assert(request, self.semaphore.teams.all('mikezz'))
+
+    @patch('semaphore.requests.get')
+    def test_users_by_project(self, request):
+        self.return_assert(
+            request,
+            self.semaphore.teams.by_project('mikezz')
+        )
+
+    @patch('semaphore.requests.get')
+    def test_team_secrets(self, request):
+        self.return_assert(
+            request,
+            self.semaphore.teams.secrets('secret id')
+        )
+
+    @patch('semaphore.requests.get')
+    def test_get_team_by_id(self, request):
+        self.return_assert(
+            request,
+            self.semaphore.teams.by_id('id')
+        )
+
+    @patch('semaphore.requests.get')
+    def test_create_team(self, requests):
+        data = {
+            'name': 'test name',
+            'permission': 'read',
+            'description': 'cool description'
+        }
+        self.return_assert(
+            requests,
+            self.semaphore.teams.create('id', **data)
+        )

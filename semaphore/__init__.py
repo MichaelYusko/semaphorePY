@@ -16,20 +16,20 @@ class BaseRequest:
     and contains Semaphore API version, basic Semaphore API URL and etc.
 
         Args::
-            api_token A authentication token from Semaphore service
+            api_token(str): A authentication token from Semaphore service
 
         Constants::
-            BASE_URL basic Semaphore API url
-            API_VERSION Semaphore's API version
-            RESOURCE Name of a particular resource
+            BASE_URL: basic Semaphore API url
+            API_VERSION: Semaphore's API version
+            RESOURCE: Name of a particular resource
 
         Properties::
-            api_url Makes full url for HTTP calls, based on current API version
+            api_url: Makes full url for HTTP calls, based on current API version
 
 
         Methods::
-            make_url(str) Makes API url for specific API version
-            _get Makes HTTP GET request.
+            _make_url(str): Makes API url for specific API version
+            _get(requests object): Makes HTTP GET request.
     """
 
     def __init__(self, api_token):
@@ -58,7 +58,7 @@ class BaseRequest:
         """
         return self._API_VERSION
 
-    def make_url(self, api_version: str) -> str:
+    def _make_url(self, api_version: str) -> str:
         """Makes API's url for specific API version
 
             Returns::
@@ -71,8 +71,8 @@ class BaseRequest:
         """Factory method for HTTP requests
 
             Args::
-                method an HTTP request
-                resource An Semaphore's API resource
+                method(requests object): an HTTP request
+                resource(str): An Semaphore's API resource
                 kwargs extra arguments
 
             Returns::
@@ -86,7 +86,7 @@ class BaseRequest:
         """Makes HTTP(GET) request for basic Semaphore's API url
 
             Args::
-                resource An Semaphore's API resource
+                resource(str): An Semaphore's API resource
                 kwargs extra arguments
 
             Returns::
@@ -94,15 +94,39 @@ class BaseRequest:
         """
         return self._make_request(requests.get, resource, **kwargs)
 
+    def _post(self, resource: str=None, **kwargs):
+        """Makes HTTP(POST) request
+
+            Args::
+                resource(str): An Semaphore's API resource
+                kwargs extra arguments
+
+            Returns::
+                An response from Semaphore API
+        """
+        return self._make_request(requests.post, resource, **kwargs)
+
+    def _patch(self, resource: str=None, **kwargs):
+        """Makes HTTP(POST) request
+
+            Args::
+                resource(str): An Semaphore's API resource
+                kwargs extra arguments
+
+            Returns::
+                An response from Semaphore API
+        """
+        return self._make_request(requests.patch, resource, **kwargs)
+
 
 class SemaphoreBaseResource(BaseRequest):
     """Basic wrapper class for Semaphore API
 
         Args::
-            api_token A authentication token from Semaphore service
+            api_token(str): A authentication token from Semaphore service
 
         Methods::
-            default_resources(boolean) Returns available Semaphore's API resources
+            default_resources(boolean): Returns available Semaphore's API resources
     """
     def __init__(self, api_token: str):
         super().__init__(api_token)
@@ -111,7 +135,7 @@ class SemaphoreBaseResource(BaseRequest):
         """Returns all available Semaphore resources
 
             Args::
-                as_list Returns a dictionary with all available resources
+                as_list(boolen): Returns a dictionary with all available resources
                 default `False` if you set the flag as `True`, the method
                 will return an array with link, which resources are available
 
@@ -129,11 +153,11 @@ class OrganizationResource(SemaphoreBaseResource):
     """Organization resource class
 
         Args::
-            api_token A authentication token from Semaphore service
+            api_token(str): A authentication token from Semaphore service
 
         Methods::
-            list Returns an array with organization objects
-            by_name(str) Return a organization by name
+            list: Returns an array with organization objects
+            by_name(str): Return a organization by name
     """
 
     _RESOURCE = 'orgs'
@@ -149,7 +173,7 @@ class OrganizationResource(SemaphoreBaseResource):
         """Searches a organization by username
 
             Args::
-                user_name A username of a organization
+                user_name(str): A username of a organization
 
             Returns::
                 A dictionary object with organization info
@@ -174,7 +198,7 @@ class OrganizationResource(SemaphoreBaseResource):
         """Returns a organization project secret urls
 
             Args::
-                username A username of a organization
+                username(str): A username of a organization
 
             Returns::
                 An array with urls
@@ -186,7 +210,7 @@ class OrganizationResource(SemaphoreBaseResource):
         """Returns all users of a organization
 
             Args::
-                username A username of a organization
+                username(str): A username of a organization
 
             Returns::
                 An array with user objects
@@ -199,27 +223,120 @@ class TeamResource(SemaphoreBaseResource):
     """Team resource class
 
         Args::
-             api_token A authentication token from Semaphore service
+             api_token(str): A authentication token from Semaphore service
 
         Methods::
-            all(str) Returns all team objects by username
+            all(str): Returns all team objects by username
     """
     def __init__(self, api_token):
         super().__init__(api_token)
 
     _RESOURCE = 'teams'
+    ALLOWED_PERMISSIONS = ('read', 'edit', 'admin')
+
+    def __check_permission(self, permission: str):
+        """Checks if permission is allowed
+
+            Args::
+                permission(str): A permission argument for POST/PATCH methods
+        """
+        if permission not in self.ALLOWED_PERMISSIONS:
+            raise ValueError('Permission argument must be "read", "edit" or "admin"')
 
     def all(self, username):
         """Returns all teams objects, with related information
 
             Args::
-                username All related teams to username
+                username(str): All related teams to username
 
             Returns::
                 An array with team objects information
         """
         resource = f'orgs/{username}/{self._RESOURCE}'
         return self._get(resource=resource)
+
+    def by_id(self, team_id: str):
+        """Returns a team by id
+
+            Args::
+                team_id(str): A team ID which need to find
+
+            Returns::
+                A dictionary with team object
+        """
+        resource = f'{self._RESOURCE}/{team_id}'
+        return self._get(resource=resource)
+
+    def by_project(self, project_id: str):
+        """Returns teams by project ID
+
+            Args::
+                project_id(str): A project ID which need to find
+
+            Returns::
+                An array with team objects
+        """
+        resource = f'projects/{project_id}/{self._RESOURCE}'
+        return self._get(resource=resource)
+
+    def secrets(self, secret_id: str):
+        """Returns teams by secrets
+
+            Args::
+                secret_id(str): A secret ID which need to find
+
+            Returns::
+                An array with team objects
+        """
+        resource = f'secrets/{secret_id}/{self._RESOURCE}'
+        return self._get(resource=resource)
+
+    def create(self, organization_username: str, update=False, **kwargs):
+        """Creates a team for a organization
+
+            Args::
+                organization_username A username of organization
+                for which will be created a team
+
+            Extra Arguments::
+                name(str): Name for a team
+                permission(str): Set permission for a team
+                Notice that only three type of permission are allowed
+                "read", "edit" and "admin"
+                description(str): An description for a team
+
+        """
+
+        self.__check_permission(kwargs['permission'])
+        data = {
+            'name': kwargs['name'],
+            'permission': kwargs['permission'],
+            'description': kwargs['description']
+        }
+
+        resource = f'orgs/{organization_username}/{self._RESOURCE}'
+        return self._post(resource=resource, json=data)
+
+    def update(self, team_id: str, permission: str, name=None, desc=None):
+        """Updates a team by id
+
+            Args::
+                team_id(str): ID of a team which will be updated
+                permission(str): Set a new permissions for a team
+                name(str): Set a new name for a team
+                desc(str): Set a description for a team
+
+            Returns::
+                A dictionary object with team information
+        """
+        self.__check_permission(permission)
+        data = {
+            'name': name,
+            'description': desc,
+            'permission': permission
+        }
+        resource = f'{self._RESOURCE}/{team_id}'
+        return self._patch(resource=resource, json=data)
 
 
 class Semaphore(SemaphoreBaseResource):
