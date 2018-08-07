@@ -13,7 +13,7 @@ class TestBaseRequest(BaseTestCase):
 
     def test_make_url(self):
         self.assertEqual(
-            self.base_request.make_url('/v3'),
+            self.base_request._make_url('/v3'),
             'https://api.semaphoreci.com/v3'
         )
 
@@ -24,4 +24,4 @@ class TestBaseRequest(BaseTestCase):
             Args::
                 request_client Fixture of Request instance
         """
-        self.assertRaises(AssertionError, self.base_request.make_url, '1')
+        self.assertRaises(AssertionError, self.base_request._make_url, '1')
