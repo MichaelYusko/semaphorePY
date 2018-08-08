@@ -67,7 +67,7 @@ class BaseRequest:
         assert api_version.startswith('/'), f'URL must be looks like /v{api_version}'
         return self._BASE_URL + api_version
 
-    def _make_request(self, method, resource: str=None, **kwargs):
+    def _make_request(self, method, resource: str=None, only_status=False, **kwargs):
         """Factory method for HTTP requests
 
             Args::
@@ -80,6 +80,10 @@ class BaseRequest:
         """
         resource = '/' + resource if resource else ''
         url = self.api_url + '/' + resource
+
+        if only_status:
+            return method(url, headers=self._default_headers, **kwargs).status_code
+
         return method(url, headers=self._default_headers, **kwargs).json()
 
     def _get(self, resource: str=None, **kwargs):
@@ -105,6 +109,23 @@ class BaseRequest:
                 An response from Semaphore API
         """
         return self._make_request(requests.post, resource, **kwargs)
+
+    def _delete(self, resource: str=None, **kwargs):
+        """Makes HTTP(DELETE) request
+
+            Args::
+                resource(str): An Semaphore's API resource
+                kwargs extra arguments
+
+            Returns::
+                An response from Semaphore API
+        """
+        return self._make_request(
+            requests.delete,
+            resource,
+            only_status=True,
+            **kwargs
+        )
 
     def _patch(self, resource: str=None, **kwargs):
         """Makes HTTP(POST) request
@@ -337,6 +358,18 @@ class TeamResource(SemaphoreBaseResource):
         }
         resource = f'{self._RESOURCE}/{team_id}'
         return self._patch(resource=resource, json=data)
+
+    def delete(self, team_id: str):
+        """Delete a team from organization by team ID
+
+            Args::
+                team_id(str): A team ID which will be deleted
+
+            Returns::
+                A HTTP status code
+        """
+        resource = f'{self._RESOURCE}/{team_id}'
+        return self._delete(resource=resource)
 
 
 class Semaphore(SemaphoreBaseResource):

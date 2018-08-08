@@ -88,3 +88,10 @@ class TestTeamResource(BaseTestCase):
             requests,
             self.semaphore.teams.create('id', **data)
         )
+
+    @patch('semaphore.requests.get')
+    def test_delete_team(self, request):
+        return self.return_assert(
+            request,
+            self.semaphore.teams.delete('id')
+        )
