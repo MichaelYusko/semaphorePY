@@ -132,3 +132,12 @@ class TestUsersResource(BaseTestCase):
             request,
             self.semaphore.users.remove('project id', 'user id')
         )
+
+
+class TestProjectsResource(BaseTestCase):
+    @patch('semaphore.requests.get')
+    def test_list_of_projects(self, request):
+        self.return_assert(
+            request,
+            self.semaphore.projects.list('mikezz')
+        )
