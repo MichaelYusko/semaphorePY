@@ -77,7 +77,7 @@ class TestTeamResource(BaseTestCase):
             self.semaphore.teams.by_id('id')
         )
 
-    @patch('semaphore.requests.get')
+    @patch('semaphore.requests.post')
     def test_create_team(self, requests):
         data = {
             'name': 'test name',
@@ -89,9 +89,18 @@ class TestTeamResource(BaseTestCase):
             self.semaphore.teams.create('id', **data)
         )
 
-    @patch('semaphore.requests.get')
+    @patch('semaphore.requests.delete')
     def test_delete_team(self, request):
         return self.return_assert(
             request,
             self.semaphore.teams.delete('id')
+        )
+
+
+class TestUsersResource(BaseTestCase):
+    @patch('semaphore.requests.get')
+    def test_list_of_users(self, request):
+        self.return_assert(
+            request,
+            self.semaphore.users.list('mikezz')
         )

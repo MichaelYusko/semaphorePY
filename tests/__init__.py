@@ -4,7 +4,8 @@ from .test_request import TestBaseRequest
 from .test_semaphore import (
     TestBaseSemaphore,
     TestOrganizationResource,
-    TestTeamResource
+    TestTeamResource,
+    TestUsersResource
 )
 
 
@@ -14,7 +15,8 @@ if __name__ == "__main__":
         TestBaseRequest,
         TestBaseSemaphore,
         TestOrganizationResource,
-        TestTeamResource
+        TestTeamResource,
+        TestUsersResource
     )
 
     tests = [
