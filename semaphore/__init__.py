@@ -360,7 +360,7 @@ class TeamResource(SemaphoreBaseResource):
         return self._patch(resource=resource, json=data)
 
     def delete(self, team_id: str):
-        """Delete a team from organization by team ID
+        """Delete a team from a organization by team ID
 
             Args::
                 team_id(str): A team ID which will be deleted
@@ -372,9 +372,29 @@ class TeamResource(SemaphoreBaseResource):
         return self._delete(resource=resource)
 
 
+class UsersResource(SemaphoreBaseResource):
+    def __init__(self, api_token):
+        super().__init__(api_token)
+
+    _RESOURCE = 'users'
+
+    def list(self, user_name: str):
+        """Returns all users of a organization
+
+            Args::
+                user_name(str): For which need to find all users
+
+            Returns::
+                An array with user objects
+        """
+        resource = f'orgs/{user_name}/{self._RESOURCE}'
+        return self._get(resource=resource)
+
+
 class Semaphore(SemaphoreBaseResource):
     """Main wrapper class"""
     def __init__(self, api_token: str):
         super().__init__(api_token)
         self.organization = OrganizationResource(api_token)
         self.teams = TeamResource(api_token)
+        self.users = UsersResource(api_token)
