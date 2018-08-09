@@ -98,7 +98,7 @@ class BaseRequest:
         """
         return self._make_request(requests.get, resource, **kwargs)
 
-    def _post(self, resource: str=None, **kwargs):
+    def _post(self, resource: str=None, only_status=False, **kwargs):
         """Makes HTTP(POST) request
 
             Args::
@@ -108,7 +108,12 @@ class BaseRequest:
             Returns::
                 An response from Semaphore API
         """
-        return self._make_request(requests.post, resource, **kwargs)
+        return self._make_request(
+            requests.post,
+            resource,
+            only_status,
+            **kwargs
+        )
 
     def _delete(self, resource: str=None, **kwargs):
         """Makes HTTP(DELETE) request
@@ -389,6 +394,56 @@ class UsersResource(SemaphoreBaseResource):
         """
         resource = f'orgs/{user_name}/{self._RESOURCE}'
         return self._get(resource=resource)
+
+    def team_members(self, team_id: str):
+        """Returns all members of a team by ID
+
+            Args::
+                team_id(str): Team ID for which need to find an users
+
+            Returns::
+                An array with member objects
+        """
+        resource = f'orgs/{team_id}/{self._RESOURCE}'
+        return self._get(resource=resource)
+
+    def project_members(self, project_id: str):
+        """Returns all members of a project
+
+            Args::
+                project_id(str): Project ID for which need to find an users
+
+            Args::
+                An array with user objects
+        """
+        resource = f'projects/{project_id}/{self._RESOURCE}'
+        return self._get(resource=resource)
+
+    def add(self, team_id: str, user_name: str):
+        """Add a user into a team
+
+            Args::
+                team_id(str): ID of a team, in which will be added a user
+                user_name(str): A user which will be added into a team
+
+            Returns::
+                A HTTP status code
+        """
+        resource = f'teams/{team_id}/{self._RESOURCE}/{user_name}'
+        return self._post(resource=resource, only_status=True)
+
+    def remove(self, team_id: str, user_name: str):
+        """Delete a user from a team
+
+            Args::
+                team_id(str): ID of a team from which will be removed a user
+                user_name(str): A user which will be removed from a team
+
+            Returns::
+                A HTTP status code
+        """
+        resource = f'teams/{team_id}/{self._RESOURCE}/{user_name}'
+        return self._delete(resource=resource)
 
 
 class Semaphore(SemaphoreBaseResource):
