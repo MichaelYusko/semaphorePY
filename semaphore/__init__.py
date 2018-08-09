@@ -183,7 +183,10 @@ class OrganizationResource(SemaphoreBaseResource):
 
         Methods::
             list: Returns an array with organization objects
-            by_name(str): Return a organization by name
+            by_name(str): Retrieve a organization by name
+            urls(str): Retrieve urls of a organization
+            secrets_url(str): Retrieve a secrets url of a organization
+            users(str): Retrieve an users of a organization
     """
 
     _RESOURCE = 'orgs'
@@ -253,6 +256,19 @@ class TeamResource(SemaphoreBaseResource):
 
         Methods::
             all(str): Returns all team objects by username
+            __check_permission(str): Checks if a permission is allowed
+            for Semaphore API, otherwise raise the error.
+            by_id(str): Retrieve a team by ID
+            by_project(str): Retrieve a team by project ID
+            secrets(str): Retrieve a team by secrets ID
+
+            create(str, str, str): Create a team
+            notice that `permission` argument must be
+            one from  the ['read', 'edit', 'admin']
+            otherwise raise the error.
+
+            update(str): Update a team by ID
+            delete(str): Delete a team by ID
     """
     def __init__(self, api_token):
         super().__init__(api_token)
@@ -378,6 +394,18 @@ class TeamResource(SemaphoreBaseResource):
 
 
 class UsersResource(SemaphoreBaseResource):
+    """Users resource class
+
+        Args::
+             api_token(str): A authentication token from Semaphore service
+
+        Methods::
+           list(str): Retrieves all users of a organization
+           team_members(str): Retrieves all members of a team
+           project_members(str): Retrieves all users of a project
+           add(str): Add a user into a team
+           remove(str): Remove a user from a team
+    """
     def __init__(self, api_token):
         super().__init__(api_token)
 
@@ -446,6 +474,34 @@ class UsersResource(SemaphoreBaseResource):
         return self._delete(resource=resource)
 
 
+class ProjectsResource(SemaphoreBaseResource):
+    """Projects resource class
+
+        Args::
+             api_token(str): A authentication token from Semaphore service
+
+        Methods::
+        list(str): Retrieve an project objects of a organization
+    """
+    def __init__(self, api_token):
+        super().__init__(api_token)
+
+    _RESOURCE = 'projects'
+
+    def list(self, user_name: str):
+        """Returns an projects of a organization
+
+            Args::
+                user_name(str): Name of organization
+                for which need to retrieve an projects
+
+            Returns::
+                An array with project objects
+        """
+        resource = f'orgs/{user_name}/{self._RESOURCE}'
+        return self._get(resource=resource)
+
+
 class Semaphore(SemaphoreBaseResource):
     """Main wrapper class"""
     def __init__(self, api_token: str):
@@ -453,3 +509,4 @@ class Semaphore(SemaphoreBaseResource):
         self.organization = OrganizationResource(api_token)
         self.teams = TeamResource(api_token)
         self.users = UsersResource(api_token)
+        self.projects = ProjectsResource(api_token)
