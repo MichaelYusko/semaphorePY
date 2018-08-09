@@ -104,3 +104,31 @@ class TestUsersResource(BaseTestCase):
             request,
             self.semaphore.users.list('mikezz')
         )
+
+    @patch('semaphore.requests.get')
+    def test_members_of_team(self, request):
+        self.return_assert(
+            request,
+            self.semaphore.users.team_members('mikezz')
+        )
+
+    @patch('semaphore.requests.get')
+    def test_members_of_project(self, request):
+        self.return_assert(
+            request,
+            self.semaphore.users.project_members('mikezz')
+        )
+
+    @patch('semaphore.requests.post')
+    def test_add_user_to_team(self, request):
+        self.return_assert(
+            request,
+            self.semaphore.users.add('project id', 'user id')
+        )
+
+    @patch('semaphore.requests.delete')
+    def test_remove_user_from_team(self, request):
+        self.return_assert(
+            request,
+            self.semaphore.users.remove('project id', 'user id')
+        )
