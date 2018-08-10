@@ -481,7 +481,12 @@ class ProjectsResource(SemaphoreBaseResource):
              api_token(str): A authentication token from Semaphore service
 
         Methods::
-        list(str): Retrieve an project objects of a organization
+            list(str): Retrieve an project objects of a organization
+            added_projects(str): Retrieve an projects which will be added to a team
+            project_secrets(str): Retrieve an projects based on secrets ID
+            create(str, str, str, str): Create a project in a organization
+            add_team(str, str): Find a project by ID and added a project into a team
+            delete_team(str, str): Remove a project from a team
     """
     def __init__(self, api_token):
         super().__init__(api_token)
@@ -500,6 +505,81 @@ class ProjectsResource(SemaphoreBaseResource):
         """
         resource = f'orgs/{user_name}/{self._RESOURCE}'
         return self._get(resource=resource)
+
+    def added_projects(self, team_id: str):
+        """Retrieves an projects added to a team
+
+            Args::
+                team_id(str): A team for which will need to find
+                added projects
+
+            Returns::
+                An array with project objects
+        """
+        resource = f'teams/{team_id}/{self._RESOURCE}'
+        return self._get(resource=resource)
+
+    def project_secrets(self, secret_id: str):
+        """Retrieves an projects by secrets ID
+
+            Args::
+                secret_id ID of a secret resource
+
+            Returns::
+                An array with project objects
+        """
+        resource = f'secrets/{secret_id}/{self._RESOURCE}'
+        return self._get(resource=resource)
+
+    def create(self, user_name: str, name: str, repo_name: str,
+               repo_owner, repo_provider: str):
+        """
+            Args::
+                name Name of the project on Semaphore
+                repo_name Name of the repository on GitHub or BitBucket
+                repo_owner Name of the repository owner on GitHub or BitBucket
+                repo_provider Repository Host
+
+            Returns::
+                A project object
+        """
+        if repo_provider not in ('github', 'bitbucket'):
+            raise ValueError('repo_provider must be github or bitbucket')
+
+        data = {
+            'name': name,
+            'repo_name': repo_name,
+            'repo_owner': repo_owner,
+            'repo_provider': repo_provider
+        }
+        resource = f'orgs/{user_name}/projects'
+        return self._post(resource=resource, json=data)
+
+    def add_team(self, team_id: str, project_id: str):
+        """Add a team to a project
+
+            Args::
+                team_id ID of a team, in which will be added a project
+                project_id ID of a project, which will be added into a team
+
+            Returns::
+                A HTTP status code
+        """
+        resource = f'teams/{team_id}/{self._RESOURCE}/{project_id}'
+        return self._post(resource=resource, only_status=True)
+
+    def delete_team(self, team_id: str, project_id: str):
+        """Delete a team from a project
+
+            Args::
+                team_id ID of a team, in which will be deleted from a project
+                project_id ID of a project, which will be deleted from a team
+
+            Returns::
+                A HTTP status code
+       """
+        resource = f'teams/{team_id}/{self._RESOURCE}/{project_id}'
+        return self._delete(resource=resource)
 
 
 class Semaphore(SemaphoreBaseResource):

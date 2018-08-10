@@ -135,9 +135,51 @@ class TestUsersResource(BaseTestCase):
 
 
 class TestProjectsResource(BaseTestCase):
+    TEST_DATA = {
+        'name': 'name',
+        'repo_name': 'repo name',
+        'repo_owner': 'repo owner',
+        'repo_provider': 'github'
+    }
+
     @patch('semaphore.requests.get')
     def test_list_of_projects(self, request):
         self.return_assert(
             request,
             self.semaphore.projects.list('mikezz')
+        )
+
+    @patch('semaphore.requests.get')
+    def test_added_projects(self, request):
+        self.return_assert(
+            request,
+            self.semaphore.projects.added_projects('id')
+        )
+
+    @patch('semaphore.requests.get')
+    def test_project_secrets(self, request):
+        self.return_assert(
+            request,
+            self.semaphore.projects.project_secrets('id')
+        )
+
+    @patch('semaphore.requests.post')
+    def test_create_project(self, request):
+        self.return_assert(
+            request,
+            self.semaphore.projects.create('mikezz', **self.TEST_DATA)
+        )
+
+    @patch('semaphore.requests.post')
+    def test_add_project_for_team(self, request):
+        self.return_assert(
+            request,
+            self.semaphore.projects.add_team('project', 'team')
+        )
+
+    @patch('semaphore.requests.delete')
+    def test_delete_project_from_team(self, request):
+        self.return_assert(
+            request,
+            self.semaphore.projects.delete_team('project', 'team')
         )
