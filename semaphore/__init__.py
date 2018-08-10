@@ -582,6 +582,32 @@ class ProjectsResource(SemaphoreBaseResource):
         return self._delete(resource=resource)
 
 
+class SecretsResource(SemaphoreBaseResource):
+    """Projects resource class
+
+           Args::
+                api_token(str): A authentication token from Semaphore service
+
+           Methods::
+           all(str): Retrieves all secret variables of a organization
+       """
+
+    _RESOURCE = 'secrets'
+
+    def all(self, org_username: str):
+        """Returns all secret variables of a organization
+
+            Args::
+                org_username: Username of organization, for which need
+                to find secret variables
+
+            Returns::
+                An array with secret objects
+        """
+        resource = f'orgs/{org_username}/{self._RESOURCE}'
+        return self._get(resource=resource)
+
+
 class Semaphore(SemaphoreBaseResource):
     """Main wrapper class"""
     def __init__(self, api_token: str):
@@ -590,3 +616,4 @@ class Semaphore(SemaphoreBaseResource):
         self.teams = TeamResource(api_token)
         self.users = UsersResource(api_token)
         self.projects = ProjectsResource(api_token)
+        self.secrets = SecretsResource(api_token)
