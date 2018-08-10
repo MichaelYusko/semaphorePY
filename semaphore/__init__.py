@@ -182,11 +182,11 @@ class OrganizationResource(SemaphoreBaseResource):
             api_token(str): A authentication token from Semaphore service
 
         Methods::
-            list: Returns an array with organization objects
-            by_name(str): Retrieve a organization by name
-            urls(str): Retrieve urls of a organization
-            secrets_url(str): Retrieve a secrets url of a organization
-            users(str): Retrieve an users of a organization
+            list: Returns an array with an organization objects
+            by_name(str): Retrieve an organization by name
+            urls(str): Retrieve urls of an organization
+            secrets_url(str): Retrieve a secrets url of an organization
+            users(str): Retrieve an users of an organization
     """
 
     _RESOURCE = 'orgs'
@@ -195,27 +195,27 @@ class OrganizationResource(SemaphoreBaseResource):
         super().__init__(api_token)
 
     def list(self):
-        """Returns an array with organization objects"""
+        """Returns an array with an organization objects"""
         return self._get(resource=self._RESOURCE)
 
     def by_name(self, user_name: str):
-        """Searches a organization by username
+        """Searches an organization by username
 
             Args::
-                user_name(str): A username of a organization
+                user_name(str): A username of an organization
 
             Returns::
-                A dictionary object with organization info
+                A dictionary object with an organization info
                 otherwise error object
         """
         resource = f'{self._RESOURCE}/{user_name}'
         return self._get(resource=resource)
 
     def urls(self, username):
-        """Returns a organization project urls
+        """Returns an organization project urls
 
             Args::
-                username A username of a organization
+                username A username of an organization
 
             Returns::
                 An array with urls
@@ -224,10 +224,10 @@ class OrganizationResource(SemaphoreBaseResource):
         return self._get(resource=resource)
 
     def secret_urls(self, username):
-        """Returns a organization project secret urls
+        """Returns an organization project secret urls
 
             Args::
-                username(str): A username of a organization
+                username(str): A username of an organization
 
             Returns::
                 An array with urls
@@ -236,10 +236,10 @@ class OrganizationResource(SemaphoreBaseResource):
         return self._get(resource=resource)
 
     def users(self, username: str):
-        """Returns all users of a organization
+        """Returns all users of an organization
 
             Args::
-                username(str): A username of a organization
+                username(str): A username of an organization
 
             Returns::
                 An array with user objects
@@ -337,7 +337,7 @@ class TeamResource(SemaphoreBaseResource):
         """Creates a team for a organization
 
             Args::
-                organization_username A username of organization
+                organization_username A username of an organization
                 for which will be created a team
 
             Extra Arguments::
@@ -381,7 +381,7 @@ class TeamResource(SemaphoreBaseResource):
         return self._patch(resource=resource, json=data)
 
     def delete(self, team_id: str):
-        """Delete a team from a organization by team ID
+        """Delete a team from an organization by team ID
 
             Args::
                 team_id(str): A team ID which will be deleted
@@ -400,7 +400,7 @@ class UsersResource(SemaphoreBaseResource):
              api_token(str): A authentication token from Semaphore service
 
         Methods::
-           list(str): Retrieves all users of a organization
+           list(str): Retrieves all users of an organization
            team_members(str): Retrieves all members of a team
            project_members(str): Retrieves all users of a project
            add(str): Add a user into a team
@@ -412,7 +412,7 @@ class UsersResource(SemaphoreBaseResource):
     _RESOURCE = 'users'
 
     def list(self, user_name: str):
-        """Returns all users of a organization
+        """Returns all users of an organization
 
             Args::
                 user_name(str): For which need to find all users
@@ -481,10 +481,10 @@ class ProjectsResource(SemaphoreBaseResource):
              api_token(str): A authentication token from Semaphore service
 
         Methods::
-            list(str): Retrieve an project objects of a organization
+            list(str): Retrieve an project objects of an organization
             added_projects(str): Retrieve an projects which will be added to a team
             project_secrets(str): Retrieve an projects based on secrets ID
-            create(str, str, str, str): Create a project in a organization
+            create(str, str, str, str): Create a project in an organization
             add_team(str, str): Find a project by ID and added a project into a team
             delete_team(str, str): Remove a project from a team
     """
@@ -494,10 +494,10 @@ class ProjectsResource(SemaphoreBaseResource):
     _RESOURCE = 'projects'
 
     def list(self, user_name: str):
-        """Returns an projects of a organization
+        """Returns an projects of an organization
 
             Args::
-                user_name(str): Name of organization
+                user_name(str): Name of an organization
                 for which need to retrieve an projects
 
             Returns::
@@ -589,16 +589,20 @@ class SecretsResource(SemaphoreBaseResource):
                 api_token(str): A authentication token from Semaphore service
 
            Methods::
-           all(str): Retrieves all secret variables of a organization
+               all(str): Retrieves all secret variables of an organization
+               team(str): Retrieves all secret variables which related to a team
+               project(str): Retrieves all secret variables which related to a project
+               by_id(str): Returns a secret object by ID
+               create(str, str, str): Creates a secret object in an organization
        """
 
     _RESOURCE = 'secrets'
 
     def all(self, org_username: str):
-        """Returns all secret variables of a organization
+        """Returns all secret variables of an organization
 
             Args::
-                org_username: Username of organization, for which need
+                org_username: Username of an organization, for which need
                 to find secret variables
 
             Returns::
@@ -606,6 +610,63 @@ class SecretsResource(SemaphoreBaseResource):
         """
         resource = f'orgs/{org_username}/{self._RESOURCE}'
         return self._get(resource=resource)
+
+    def team(self, team_id: str):
+        """Returns secrets variables of a team
+
+            Args::
+                team_id A team for which need to return secret variables
+
+            Returns::
+                An array with secret objects
+        """
+        resource = f'teams/{team_id}/{self._RESOURCE}'
+        return self._get(resource=resource)
+
+    def project(self, project_id: str):
+        """Returns all attached secrets for a project
+
+            Args::
+                project_id ID of a project, for which need to find a secrets
+                variables and etc
+
+            Returns::
+                An array with secret objects
+        """
+        resource = f'projects/{project_id}/secrets'
+        return self._get(resource=resource)
+
+    def by_id(self, secret_id: str):
+        """Returns a secret by ID
+
+            Args::
+                secret_id A secret ID which need to return,
+                otherwise 404 HTTP status code
+
+            Returns::
+                A object with secret information
+        """
+        resource = f'{self._RESOURCE}/{secret_id}'
+        return self._get(resource=resource)
+
+    def create(self, org_username: str, name: str, description: str=None):
+        """Create a secret in an organization
+
+            Args::
+                org_username A name of an organization for which
+                will be created a secret
+                name Name of the secret
+                description Description for the secret
+
+            Returns::
+                A object with secret information
+        """
+        resource = f'orgs/{org_username}/secrets'
+        data = {
+            'name': name,
+            'description': description
+        }
+        return self._post(resource=resource, json=data)
 
 
 class Semaphore(SemaphoreBaseResource):
