@@ -486,6 +486,7 @@ class ProjectsResource(SemaphoreBaseResource):
             project_secrets(str): Retrieve an projects based on secrets ID
             create(str, str, str, str): Create a project in a organization
             add_team(str, str): Find a project by ID and added a project into a team
+            delete_team(str, str): Remove a project from a team
     """
     def __init__(self, api_token):
         super().__init__(api_token)
