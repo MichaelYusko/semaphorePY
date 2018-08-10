@@ -192,3 +192,31 @@ class TestSecretsResource(BaseTestCase):
             request,
             self.semaphore.secrets.all('mikezz')
         )
+
+    @patch('semaphore.requests.get')
+    def test_secrets_team(self, request):
+        self.return_assert(
+            request,
+            self.semaphore.secrets.team('team id')
+        )
+
+    @patch('semaphore.requests.get')
+    def test_secrets_project(self, request):
+        self.return_assert(
+            request,
+            self.semaphore.secrets.project('project id')
+        )
+
+    @patch('semaphore.requests.get')
+    def test_get_secret_by_id(self, request):
+        self.return_assert(
+            request,
+            self.semaphore.secrets.by_id('project id')
+        )
+
+    @patch('semaphore.requests.get')
+    def test_create_secret(self, request):
+        self.return_assert(
+            request,
+            self.semaphore.secrets.create('org name', 'secret name')
+        )
