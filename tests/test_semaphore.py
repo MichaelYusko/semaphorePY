@@ -183,3 +183,12 @@ class TestProjectsResource(BaseTestCase):
             request,
             self.semaphore.projects.delete_team('project', 'team')
         )
+
+
+class TestSecretsResource(BaseTestCase):
+    @patch('semaphore.requests.get')
+    def test_all_secrets(self, request):
+        self.return_assert(
+            request,
+            self.semaphore.secrets.all('mikezz')
+        )
