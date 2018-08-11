@@ -583,7 +583,7 @@ class ProjectsResource(SemaphoreBaseResource):
 
 
 class SecretsResource(SemaphoreBaseResource):
-    """Projects resource class
+    """Secrets resource class
 
            Args::
                 api_token(str): A authentication token from Semaphore service
@@ -597,6 +597,10 @@ class SecretsResource(SemaphoreBaseResource):
 
                update(str, str, str): Update a secret object by ID
                only `name`, `description` fields
+               delete(str): Delete a secret by ID
+               attach_to_project(str, str): Attach a secret in a project
+               delete_from_team(str, str): Delete a secret from a team
+               dettach_from_project(str, str): Dettatach a secret from a project
        """
 
     _RESOURCE = 'secrets'
@@ -687,6 +691,57 @@ class SecretsResource(SemaphoreBaseResource):
             'description': description
         }
         return self._patch(resource=resource, json=data)
+
+    def delete(self, secret_id: str):
+        """Delete a secret by ID
+
+            Args::
+                secret_id ID of a secret which will be deleted
+
+            Returns::
+                The 204 HTTP status code
+        """
+        resource = f'{self._RESOURCE}/{secret_id}'
+        return self._delete(resource=resource)
+
+    def attach_to_project(self, project_id: str, secret_id: str):
+        """Attaches a secret to a project
+
+            Args::
+                project_id ID of a project for which will be attached a secret
+                secret_id ID of a secret which will be attached to a project
+
+            Returns::
+                A dictionary with secret information
+        """
+        resource = f'projects/{project_id}/secrets/{secret_id}'
+        return self._post(resource=resource)
+
+    def delete_from_team(self, team_id: str, secret_id: str):
+        """Delete a secret from a team
+
+            Args::
+                team_id ID of a team from which secret will be deleted
+                secret_id ID of a secret which will be deleted from a team
+
+            Returns::
+                The 204 HTTP status code
+        """
+        resource = f'teams/{team_id}/{self._RESOURCE}/{secret_id}'
+        return self._delete(resource=resource)
+
+    def dettach_from_project(self, project_id: str, secret_id: str):
+        """Dettach a secret from a project
+
+            Args::
+                project_id ID of a project from which will be dettatached secret
+                secret_id ID of a secret which will be dettatached from a project
+
+            Returns::
+                The 204 HTTP status code
+        """
+        resource = f'projects/{project_id}/{self._RESOURCE}/{secret_id}'
+        return self._delete(resource=resource)
 
 
 class Semaphore(SemaphoreBaseResource):

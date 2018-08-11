@@ -227,3 +227,31 @@ class TestSecretsResource(BaseTestCase):
             request,
             self.semaphore.secrets.update('id of secret', 'update secret name')
         )
+
+    @patch('semaphore.requests.patch')
+    def test_delete_secret(self, request):
+        self.return_assert(
+            request,
+            self.semaphore.secrets.delete('secret id')
+        )
+
+    @patch('semaphore.requests.patch')
+    def test_attach_secret_to_project(self, request):
+        self.return_assert(
+            request,
+            self.semaphore.secrets.attach_to_project('project id', 'secret id')
+        )
+
+    @patch('semaphore.requests.delete')
+    def test_delete_from_team(self, request):
+        self.return_assert(
+            request,
+            self.semaphore.secrets.delete_from_team('team id', 'secret id')
+        )
+
+    @patch('semaphore.requests.delete')
+    def test_dettatach_secret(self, request):
+        self.return_assert(
+            request,
+            self.semaphore.secrets.dettach_from_project('project id', 'secret id')
+        )
