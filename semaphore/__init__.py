@@ -583,7 +583,7 @@ class ProjectsResource(SemaphoreBaseResource):
 
 
 class SecretsResource(SemaphoreBaseResource):
-    """Projects resource class
+    """Secrets resource class
 
            Args::
                 api_token(str): A authentication token from Semaphore service
