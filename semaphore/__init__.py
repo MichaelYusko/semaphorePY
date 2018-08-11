@@ -594,6 +594,9 @@ class SecretsResource(SemaphoreBaseResource):
                project(str): Retrieves all secret variables which related to a project
                by_id(str): Returns a secret object by ID
                create(str, str, str): Creates a secret object in an organization
+
+               update(str, str, str): Update a secret object by ID
+               only `name`, `description` fields
        """
 
     _RESOURCE = 'secrets'
@@ -667,6 +670,23 @@ class SecretsResource(SemaphoreBaseResource):
             'description': description
         }
         return self._post(resource=resource, json=data)
+
+    def update(self, secret_id: str, name: str=None, description: str=None):
+        """Updates a secret by ID
+
+            Args::
+                name Name of the secret
+                description Description for the secrets.
+
+            Returns::
+                a dictionary with secret object
+        """
+        resource = f'{self._RESOURCE}/{secret_id}'
+        data = {
+            'name': name,
+            'description': description
+        }
+        return self._patch(resource=resource, json=data)
 
 
 class Semaphore(SemaphoreBaseResource):
