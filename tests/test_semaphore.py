@@ -220,3 +220,10 @@ class TestSecretsResource(BaseTestCase):
             request,
             self.semaphore.secrets.create('org name', 'secret name')
         )
+
+    @patch('semaphore.requests.patch')
+    def test_update_secret(self, request):
+        self.return_assert(
+            request,
+            self.semaphore.secrets.update('id of secret', 'update secret name')
+        )
