@@ -255,3 +255,12 @@ class TestSecretsResource(BaseTestCase):
             request,
             self.semaphore.secrets.dettach_from_project('project id', 'secret id')
         )
+
+
+class TestEnvironmentResource(BaseTestCase):
+    @patch('semaphore.requests.get')
+    def test_all_environments(self, request):
+        self.return_assert(
+            request,
+            self.semaphore.environment.all('project id')
+        )

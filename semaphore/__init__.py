@@ -603,6 +603,9 @@ class SecretsResource(SemaphoreBaseResource):
                dettach_from_project(str, str): Dettatach a secret from a project
        """
 
+    def __init__(self, api_token):
+        super().__init__(api_token)
+
     _RESOURCE = 'secrets'
 
     def all(self, org_username: str):
@@ -744,6 +747,35 @@ class SecretsResource(SemaphoreBaseResource):
         return self._delete(resource=resource)
 
 
+class EnvironmentResource(SemaphoreBaseResource):
+    """Environment resource class
+
+            Args::
+                api_token(str): A authentication token from Semaphore service
+
+            Methods::
+                all(str): Retrieves all environment variables of a project
+       """
+
+    def __init__(self, api_token):
+        super().__init__(api_token)
+
+    _RESOURCE = 'env_vars'
+
+    def all(self, project_id: str):
+        """Returns all environment variables which related to a project
+
+            Args::
+                project_id ID of a project for which need to find
+                an environment variables
+
+            Returns::
+                An array with environment objects
+        """
+        resource = f'projects/{project_id}/{self._RESOURCE}'
+        return self._get(resource=resource)
+
+
 class Semaphore(SemaphoreBaseResource):
     """Main wrapper class"""
     def __init__(self, api_token: str):
@@ -753,3 +785,4 @@ class Semaphore(SemaphoreBaseResource):
         self.users = UsersResource(api_token)
         self.projects = ProjectsResource(api_token)
         self.secrets = SecretsResource(api_token)
+        self.environment = EnvironmentResource(api_token)
