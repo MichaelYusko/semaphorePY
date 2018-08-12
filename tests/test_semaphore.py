@@ -264,3 +264,39 @@ class TestEnvironmentResource(BaseTestCase):
             request,
             self.semaphore.environment.all('project id')
         )
+
+    @patch('semaphore.requests.get')
+    def test_secrets_environment(self, request):
+        self.return_assert(
+            request,
+            self.semaphore.environment.secrets('secret id')
+        )
+
+    @patch('semaphore.requests.post')
+    def test_create_environment(self, request):
+        self.return_assert(
+            request,
+            self.semaphore.environment.create(
+                'secret id',
+                'test',
+                'test'
+            )
+        )
+
+    @patch('semaphore.requests.patch')
+    def test_update_environment(self, request):
+        self.return_assert(
+            request,
+            self.semaphore.environment.update(
+                'environment id',
+                'test two',
+                'test two'
+            )
+        )
+
+    @patch('semaphore.requests.delete')
+    def test_delete_environment(self, request):
+        self.return_assert(
+            request,
+            self.semaphore.environment.delete('variable id')
+        )

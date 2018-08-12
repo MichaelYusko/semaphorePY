@@ -755,6 +755,13 @@ class EnvironmentResource(SemaphoreBaseResource):
 
             Methods::
                 all(str): Retrieves all environment variables of a project
+                secrets(str): Retrieves all variables belonging to a secret
+                by_id(str): Retrieves a environment object by ID
+                create(str, str, str, bool): Create environment
+                variable within a secret
+
+                update(str, str, str): Update a environment variable by ID
+                delete(str): Delete a environment variable by ID
        """
 
     def __init__(self, api_token):
@@ -774,6 +781,80 @@ class EnvironmentResource(SemaphoreBaseResource):
         """
         resource = f'projects/{project_id}/{self._RESOURCE}'
         return self._get(resource=resource)
+
+    def secrets(self, secret_id: str):
+        """Returns variables belonging to a secret
+
+            Args::
+                secret_id ID of a secret for which need to return
+                variables
+
+            Returns::
+                An array with secret objects
+        """
+        resource = f'secrets/{secret_id}/{self._RESOURCE}'
+        return self._get(resource=resource)
+
+    def by_id(self, env_var: str):
+        """Returns a environment variable by ID
+
+            Args::
+                env_var ID of environment variable which need to find
+
+            Returns::
+                A object with variable information
+        """
+        resource = f'{self._RESOURCE}/{env_var}'
+        return self._get(resource=resource)
+
+    def create(self, secret_id: str, name: str, content: str, encrypted: bool=True):
+        """Create a environment variable within a secret
+
+            Args::
+                secret_id ID of a secret for which will be created a variable
+                name Name of the environment variable.
+                content Content of the environment variable
+                encrypted Encrypt data or not
+            Returns::
+                A object with variable information
+        """
+        data = {
+            'name': name,
+            'content': content,
+            'encrypted': encrypted
+        }
+        resource = f'secrets/{secret_id}/{self._RESOURCE}'
+        return self._post(resource=resource, json=data)
+
+    def update(self, env_var: str, name: str=None, content: str=None):
+        """Updates a environment variable by ID
+
+            Args::
+                env_var ID of a environment variable which will be updated
+                name Name of the environment variable
+                content Content of the environment variable
+
+            Returns::
+                A object with variable information
+        """
+        resource = f'env_vars/{env_var}'
+        data = {
+            'name': name,
+            'content': content
+        }
+        return self._patch(resource=resource, json=data)
+
+    def delete(self, env_var: str):
+        """Delete a environment variable by ID
+
+            Args::
+                env_var ID of environment which will be deleted
+
+            Returns::
+                The 204 HTTP status code
+        """
+        resource = f'{self._RESOURCE}/{env_var}'
+        return self._delete(resource=resource)
 
 
 class Semaphore(SemaphoreBaseResource):
