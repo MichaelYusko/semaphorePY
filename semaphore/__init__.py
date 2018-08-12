@@ -757,7 +757,9 @@ class EnvironmentResource(SemaphoreBaseResource):
                 all(str): Retrieves all environment variables of a project
                 secrets(str): Retrieves all variables belonging to a secret
                 by_id(str): Retrieves a environment object by ID
-                create(str, str, str, bool): Create environment variable within a secret
+                create(str, str, str, bool): Create environment
+                variable within a secret
+
                 update(str, str, str): Update a environment variable by ID
                 delete(str): Delete a environment variable by ID
        """
