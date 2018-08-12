@@ -1,4 +1,5 @@
 import semaphore
+
 from setuptools import setup
 
 setup_parameters = {
@@ -10,7 +11,7 @@ setup_parameters = {
     'description': 'SemaphoreCI python wrapper',
     'packages': ['semaphore'],
     'classifiers': [
-        'Development Status :: 1 - Planning',
+        'Development Status :: 5 - Production/Stable',
         'Environment :: Web Environment',
         'Programming Language :: Python :: 3.6',
         'License :: OSI Approved :: MIT License'
@@ -18,7 +19,7 @@ setup_parameters = {
 }
 
 
-requirements = ['requests==2.19.1']
+requirements = ['requests>=2.19.1']
 
 setup_parameters['install_requires'] = requirements
 

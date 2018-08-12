@@ -3,7 +3,7 @@ import unittest
 
 from mock import MagicMock
 
-from semaphore import BaseRequest, Semaphore
+from semaphore.client import BaseRequest, Semaphore
 
 
 class BaseTestCase(unittest.TestCase):
