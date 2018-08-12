@@ -325,7 +325,7 @@ class TestConfigFileResource(BaseTestCase):
         )
 
     @patch('semaphore.requests.post')
-    def test_by_id(self, request):
+    def test_create_file(self, request):
         self.return_assert(
             request,
             self.semaphore.config_files.create(
