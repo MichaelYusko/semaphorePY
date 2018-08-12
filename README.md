@@ -19,6 +19,7 @@ pip install semaphorePY
 ### Guide
 ```
 # Create a instance of Semaphore client
+
 from semaphore.client import Semaphore
 semaphore = Semaphore('YOUR-AUTH-TOKEN-HERE')
 
