@@ -8,7 +8,8 @@ from .test_semaphore import (
     TestUsersResource,
     TestProjectsResource,
     TestSecretsResource,
-    TestEnvironmentResource
+    TestEnvironmentResource,
+    TestConfigFileResource
 )
 
 
@@ -22,7 +23,8 @@ if __name__ == "__main__":
         TestUsersResource,
         TestProjectsResource,
         TestSecretsResource,
-        TestEnvironmentResource
+        TestEnvironmentResource,
+        TestConfigFileResource
     )
 
     tests = [

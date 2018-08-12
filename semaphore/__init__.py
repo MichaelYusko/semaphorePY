@@ -202,7 +202,7 @@ class OrganizationResource(SemaphoreBaseResource):
         """Searches an organization by username
 
             Args::
-                user_name(str): A username of an organization
+                user_name: A username of an organization
 
             Returns::
                 A dictionary object with an organization info
@@ -215,7 +215,7 @@ class OrganizationResource(SemaphoreBaseResource):
         """Returns an organization project urls
 
             Args::
-                username A username of an organization
+                username: A username of an organization
 
             Returns::
                 An array with urls
@@ -227,7 +227,7 @@ class OrganizationResource(SemaphoreBaseResource):
         """Returns an organization project secret urls
 
             Args::
-                username(str): A username of an organization
+                username: A username of an organization
 
             Returns::
                 An array with urls
@@ -239,7 +239,7 @@ class OrganizationResource(SemaphoreBaseResource):
         """Returns all users of an organization
 
             Args::
-                username(str): A username of an organization
+                username: A username of an organization
 
             Returns::
                 An array with user objects
@@ -289,7 +289,7 @@ class TeamResource(SemaphoreBaseResource):
         """Returns all teams objects, with related information
 
             Args::
-                username(str): All related teams to username
+                username: All related teams to username
 
             Returns::
                 An array with team objects information
@@ -301,7 +301,7 @@ class TeamResource(SemaphoreBaseResource):
         """Returns a team by id
 
             Args::
-                team_id(str): A team ID which need to find
+                team_id: A team ID which need to find
 
             Returns::
                 A dictionary with team object
@@ -313,7 +313,7 @@ class TeamResource(SemaphoreBaseResource):
         """Returns teams by project ID
 
             Args::
-                project_id(str): A project ID which need to find
+                project_id: A project ID which need to find
 
             Returns::
                 An array with team objects
@@ -337,7 +337,7 @@ class TeamResource(SemaphoreBaseResource):
         """Creates a team for a organization
 
             Args::
-                organization_username A username of an organization
+                organization_username: A username of an organization
                 for which will be created a team
 
             Extra Arguments::
@@ -363,10 +363,10 @@ class TeamResource(SemaphoreBaseResource):
         """Updates a team by id
 
             Args::
-                team_id(str): ID of a team which will be updated
-                permission(str): Set a new permissions for a team
-                name(str): Set a new name for a team
-                desc(str): Set a description for a team
+                team_id: ID of a team which will be updated
+                permission: Set a new permissions for a team
+                name: Set a new name for a team
+                desc: Set a description for a team
 
             Returns::
                 A dictionary object with team information
@@ -384,7 +384,7 @@ class TeamResource(SemaphoreBaseResource):
         """Delete a team from an organization by team ID
 
             Args::
-                team_id(str): A team ID which will be deleted
+                team_id: A team ID which will be deleted
 
             Returns::
                 A HTTP status code
@@ -415,7 +415,7 @@ class UsersResource(SemaphoreBaseResource):
         """Returns all users of an organization
 
             Args::
-                user_name(str): For which need to find all users
+                user_name: For which need to find all users
 
             Returns::
                 An array with user objects
@@ -427,7 +427,7 @@ class UsersResource(SemaphoreBaseResource):
         """Returns all members of a team by ID
 
             Args::
-                team_id(str): Team ID for which need to find an users
+                team_id: Team ID for which need to find an users
 
             Returns::
                 An array with member objects
@@ -439,7 +439,7 @@ class UsersResource(SemaphoreBaseResource):
         """Returns all members of a project
 
             Args::
-                project_id(str): Project ID for which need to find an users
+                project_id: Project ID for which need to find an users
 
             Args::
                 An array with user objects
@@ -451,8 +451,8 @@ class UsersResource(SemaphoreBaseResource):
         """Add a user into a team
 
             Args::
-                team_id(str): ID of a team, in which will be added a user
-                user_name(str): A user which will be added into a team
+                team_id: ID of a team, in which will be added a user
+                user_name: A user which will be added into a team
 
             Returns::
                 A HTTP status code
@@ -464,8 +464,8 @@ class UsersResource(SemaphoreBaseResource):
         """Delete a user from a team
 
             Args::
-                team_id(str): ID of a team from which will be removed a user
-                user_name(str): A user which will be removed from a team
+                team_id: ID of a team from which will be removed a user
+                user_name: A user which will be removed from a team
 
             Returns::
                 A HTTP status code
@@ -497,7 +497,7 @@ class ProjectsResource(SemaphoreBaseResource):
         """Returns an projects of an organization
 
             Args::
-                user_name(str): Name of an organization
+                user_name: Name of an organization
                 for which need to retrieve an projects
 
             Returns::
@@ -510,7 +510,7 @@ class ProjectsResource(SemaphoreBaseResource):
         """Retrieves an projects added to a team
 
             Args::
-                team_id(str): A team for which will need to find
+                team_id: A team for which will need to find
                 added projects
 
             Returns::
@@ -523,7 +523,7 @@ class ProjectsResource(SemaphoreBaseResource):
         """Retrieves an projects by secrets ID
 
             Args::
-                secret_id ID of a secret resource
+                secret_id: ID of a secret resource
 
             Returns::
                 An array with project objects
@@ -535,10 +535,10 @@ class ProjectsResource(SemaphoreBaseResource):
                repo_owner, repo_provider: str):
         """
             Args::
-                name Name of the project on Semaphore
-                repo_name Name of the repository on GitHub or BitBucket
-                repo_owner Name of the repository owner on GitHub or BitBucket
-                repo_provider Repository Host
+                name: of the project on Semaphore
+                repo_name: of the repository on GitHub or BitBucket
+                repo_owner: of the repository owner on GitHub or BitBucket
+                repo_provider: Repository Host
 
             Returns::
                 A project object
@@ -559,8 +559,8 @@ class ProjectsResource(SemaphoreBaseResource):
         """Add a team to a project
 
             Args::
-                team_id ID of a team, in which will be added a project
-                project_id ID of a project, which will be added into a team
+                team_id: ID of a team, in which will be added a project
+                project_id: ID of a project, which will be added into a team
 
             Returns::
                 A HTTP status code
@@ -572,8 +572,8 @@ class ProjectsResource(SemaphoreBaseResource):
         """Delete a team from a project
 
             Args::
-                team_id ID of a team, in which will be deleted from a project
-                project_id ID of a project, which will be deleted from a team
+                team_id: ID of a team, in which will be deleted from a project
+                project_id: ID of a project, which will be deleted from a team
 
             Returns::
                 A HTTP status code
@@ -625,7 +625,7 @@ class SecretsResource(SemaphoreBaseResource):
         """Returns secrets variables of a team
 
             Args::
-                team_id A team for which need to return secret variables
+                team_id: A team for which need to return secret variables
 
             Returns::
                 An array with secret objects
@@ -637,7 +637,7 @@ class SecretsResource(SemaphoreBaseResource):
         """Returns all attached secrets for a project
 
             Args::
-                project_id ID of a project, for which need to find a secrets
+                project_id: ID of a project, for which need to find a secrets
                 variables and etc
 
             Returns::
@@ -650,7 +650,7 @@ class SecretsResource(SemaphoreBaseResource):
         """Returns a secret by ID
 
             Args::
-                secret_id A secret ID which need to return,
+                secret_id: A secret ID which need to return,
                 otherwise 404 HTTP status code
 
             Returns::
@@ -663,10 +663,10 @@ class SecretsResource(SemaphoreBaseResource):
         """Create a secret in an organization
 
             Args::
-                org_username A name of an organization for which
+                org_username: A name of an organization for which
                 will be created a secret
-                name Name of the secret
-                description Description for the secret
+                name: of the secret
+                description: for the secret
 
             Returns::
                 A object with secret information
@@ -682,8 +682,8 @@ class SecretsResource(SemaphoreBaseResource):
         """Updates a secret by ID
 
             Args::
-                name Name of the secret
-                description Description for the secrets.
+                name: of the secret
+                description: for the secrets.
 
             Returns::
                 a dictionary with secret object
@@ -699,7 +699,7 @@ class SecretsResource(SemaphoreBaseResource):
         """Delete a secret by ID
 
             Args::
-                secret_id ID of a secret which will be deleted
+                secret_id: ID of a secret which will be deleted
 
             Returns::
                 The 204 HTTP status code
@@ -711,8 +711,8 @@ class SecretsResource(SemaphoreBaseResource):
         """Attaches a secret to a project
 
             Args::
-                project_id ID of a project for which will be attached a secret
-                secret_id ID of a secret which will be attached to a project
+                project_id: ID of a project for which will be attached a secret
+                secret_id: ID of a secret which will be attached to a project
 
             Returns::
                 A dictionary with secret information
@@ -724,8 +724,8 @@ class SecretsResource(SemaphoreBaseResource):
         """Delete a secret from a team
 
             Args::
-                team_id ID of a team from which secret will be deleted
-                secret_id ID of a secret which will be deleted from a team
+                team_id ID: of a team from which secret will be deleted
+                secret_id: ID of a secret which will be deleted from a team
 
             Returns::
                 The 204 HTTP status code
@@ -737,8 +737,8 @@ class SecretsResource(SemaphoreBaseResource):
         """Dettach a secret from a project
 
             Args::
-                project_id ID of a project from which will be dettatached secret
-                secret_id ID of a secret which will be dettatached from a project
+                project_id: ID of a project from which will be dettatached secret
+                secret_id: ID of a secret which will be dettatached from a project
 
             Returns::
                 The 204 HTTP status code
@@ -773,7 +773,7 @@ class EnvironmentResource(SemaphoreBaseResource):
         """Returns all environment variables which related to a project
 
             Args::
-                project_id ID of a project for which need to find
+                project_id: ID of a project for which need to find
                 an environment variables
 
             Returns::
@@ -786,7 +786,7 @@ class EnvironmentResource(SemaphoreBaseResource):
         """Returns variables belonging to a secret
 
             Args::
-                secret_id ID of a secret for which need to return
+                secret_id: ID of a secret for which need to return
                 variables
 
             Returns::
@@ -799,7 +799,7 @@ class EnvironmentResource(SemaphoreBaseResource):
         """Returns a environment variable by ID
 
             Args::
-                env_var ID of environment variable which need to find
+                env_var: ID of environment variable which need to find
 
             Returns::
                 A object with variable information
@@ -811,10 +811,10 @@ class EnvironmentResource(SemaphoreBaseResource):
         """Create a environment variable within a secret
 
             Args::
-                secret_id ID of a secret for which will be created a variable
-                name Name of the environment variable.
-                content Content of the environment variable
-                encrypted Encrypt data or not
+                secret_id: ID of a secret for which will be created a variable
+                name: of the environment variable.
+                content: of the environment variable
+                encrypted: Encrypt data or not
             Returns::
                 A object with variable information
         """
@@ -830,9 +830,9 @@ class EnvironmentResource(SemaphoreBaseResource):
         """Updates a environment variable by ID
 
             Args::
-                env_var ID of a environment variable which will be updated
-                name Name of the environment variable
-                content Content of the environment variable
+                env_var: ID of a environment variable which will be updated
+                name: of the environment variable
+                content: of the environment variable
 
             Returns::
                 A object with variable information
@@ -848,12 +848,125 @@ class EnvironmentResource(SemaphoreBaseResource):
         """Delete a environment variable by ID
 
             Args::
-                env_var ID of environment which will be deleted
+                env_var: ID of environment which will be deleted
 
             Returns::
                 The 204 HTTP status code
         """
         resource = f'{self._RESOURCE}/{env_var}'
+        return self._delete(resource=resource)
+
+
+class ConfigurationFileResource(SemaphoreBaseResource):
+    """Configuration resource class
+
+            Args::
+                api_token(str): A authentication token from Semaphore service
+
+            Methods::
+                all(str): Retrieves all configuration files connected to a project
+                secrets(str): Retrieves all configuration files
+                which related to a secret
+                by_id(str): Retrieve a configuration file by ID
+                create(str, str, str, str): Create a configuration file
+                within a secret
+                update(str, str, str): Update a configuration file
+                by ID
+                delete(str): Delete configuration file by ID
+       """
+
+    def __init__(self, api_token):
+        super().__init__(api_token)
+
+    _RESOURCE = 'config_files'
+
+    def all(self, project_id: str):
+        """Returns all configuration files related to a project
+
+            Args::
+                project_id: ID of a project for which need to return
+                a configuration file
+
+            Returns::
+                A object with configuration information
+        """
+        resource = f'projects/{project_id}/{self._RESOURCE}'
+        return self._get(resource=resource)
+
+    def secrets(self, secret_id: str):
+        """Returns a configuration files related to a secret
+
+            Args::
+                secret_id: ID of a secret for which need
+                to find a configuration file
+
+            Returns::
+                An array with configuration files
+        """
+        resource = f'secrets/{secret_id}/{self._RESOURCE}'
+        return self._get(resource=resource)
+
+    def by_id(self, config_file_id: str):
+        """Returns a configuration file by ID
+
+            Args::
+                config_file_id: ID of a config file which will be returned
+
+            Returns::
+                A object with configuration file
+        """
+        resource = f'{self._RESOURCE}/{config_file_id}'
+        return self._get(resource=resource)
+
+    def create(self, secret_id: str, path: str, content: str, encrypted: bool):
+        """Create a configuration file within a secret
+
+            Args::
+                secret_id: ID of a secret for which will be created
+                a configuration file
+                path: of the configuration file
+                content: of the configuration file
+                will be `null` if the file is encrypted.
+                encrypted: `True` if the file is encrypted.
+
+            Returns::
+                A object with configuration file
+        """
+        resource = f'secrets/{secret_id}/{self._RESOURCE}'
+        data = {
+            'path': path,
+            'content': content,
+            'encrypted': encrypted
+        }
+        return self._post(resource=resource, json=data)
+
+    def update(self, config_file_id: str, path: str=None, content: str=None):
+        """Update a configuration file by ID
+
+            Args::
+                config_file_id: ID of a configuration file
+                which will be updated
+                path: of the configuration file
+                content: of the configuration file
+        """
+        resource = f'{self._RESOURCE}/{config_file_id}'
+        data = {
+            'path': path,
+            'content': content
+        }
+        return self._patch(resource=resource, json=data)
+
+    def delete(self, config_file_id: str):
+        """Delete a configuration file by ID
+
+            Args::
+                config_file_id: ID of a configuration file
+                which will be deleted
+
+            Returns::
+                The 204 HTTP status code
+        """
+        resource = f'{self._RESOURCE}/{config_file_id}'
         return self._delete(resource=resource)
 
 
@@ -867,3 +980,4 @@ class Semaphore(SemaphoreBaseResource):
         self.projects = ProjectsResource(api_token)
         self.secrets = SecretsResource(api_token)
         self.environment = EnvironmentResource(api_token)
+        self.config_files = ConfigurationFileResource(api_token)
