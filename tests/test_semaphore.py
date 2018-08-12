@@ -300,3 +300,56 @@ class TestEnvironmentResource(BaseTestCase):
             request,
             self.semaphore.environment.delete('variable id')
         )
+
+
+class TestConfigFileResource(BaseTestCase):
+    @patch('semaphore.requests.get')
+    def test_all_files(self, request):
+        self.return_assert(
+            request,
+            self.semaphore.config_files.all('project id')
+        )
+
+    @patch('semaphore.requests.get')
+    def test_secret_files(self, request):
+        self.return_assert(
+            request,
+            self.semaphore.config_files.secrets('secret id')
+        )
+
+    @patch('semaphore.requests.get')
+    def test_by_id(self, request):
+        self.return_assert(
+            request,
+            self.semaphore.config_files.by_id('config id')
+        )
+
+    @patch('semaphore.requests.post')
+    def test_by_id(self, request):
+        self.return_assert(
+            request,
+            self.semaphore.config_files.create(
+                'secret id',
+                'path',
+                'content',
+                True
+            )
+        )
+
+    @patch('semaphore.requests.patch')
+    def test_update_file(self, request):
+        self.return_assert(
+            request,
+            self.semaphore.config_files.update(
+                'config id',
+                'update two',
+                'update two'
+            )
+        )
+
+    @patch('semaphore.requests.patch')
+    def test_delete_file(self, request):
+        self.return_assert(
+            request,
+            self.semaphore.config_files.delete('config id')
+        )
