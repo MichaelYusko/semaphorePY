@@ -34,3 +34,6 @@ semaphore.organization.list()
    * Teams
    * Projects
    * Users
+
+### API documentation
+http://semaphoreci.com/docs/api-v2-overview.html
